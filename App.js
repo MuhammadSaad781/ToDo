@@ -1,6 +1,7 @@
-import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 import {
   FlatList,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,8 +16,18 @@ import * as SplashScreen from "expo-splash-screen";
 import { AntDesign } from "@expo/vector-icons";
 import { listData } from "./Constants/ListData";
 import TodoList from "./Components/TodoList";
+import AppListModal from "./Components/AddListModal";
 
 export default function App() {
+  const [modal, setmodal] = useState(false);
+
+  function openmodal() {
+    setmodal(true);
+  }
+  function modalclose() {
+    setmodal(false);
+  }
+
   const [fontsLoaded] = useFonts({
     CircularRegular: require("./assets/CircularStd.ttf"),
     CircularBold: require("./assets/CircularStd-Bold.otf"),
@@ -76,11 +87,13 @@ export default function App() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          marginTop: 30,
         }}
+        onPress={() => openmodal()}
       >
         <AntDesign name="plus" size={24} color="white" />
       </TouchableOpacity>
-      <View style={{ width: "95%", marginTop: 20 }}>
+      <View style={{ width: "95%", marginTop: 40 }}>
         <FlatList
           showsHorizontalScrollIndicator={false}
           horizontal
@@ -90,6 +103,9 @@ export default function App() {
           renderItem={({ item }) => <TodoList list={item} />}
         />
       </View>
+      <Modal animationType="fade" visible={modal}>
+        <AppListModal closemodal={modalclose} />
+      </Modal>
     </View>
   );
 }
@@ -99,6 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    paddingTop: 50,
+
+    justifyContent: "center",
   },
 });

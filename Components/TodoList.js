@@ -39,8 +39,8 @@ export default function TodoList({ list }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 170,
-    height: 220,
+    width: 200,
+    height: 280,
     borderRadius: 10,
     display: "flex",
     alignItems: "center",
