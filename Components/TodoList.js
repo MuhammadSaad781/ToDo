@@ -1,14 +1,23 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
 import { colors } from "../Constants/Colors";
 import { font } from "../Constants/Fonts";
+import ToDoListModal from "./ToDoListModal";
 
 export default function TodoList({ list }) {
   const completedcount = list.todos.filter((item) => item.completed).length;
   const remainingcount = list.todos.length - completedcount;
+  const [modal, setmodal] = useState(false);
+  function openmodal() {
+    setmodal(true);
+  }
+  function closemodal() {
+    setmodal(false);
+  }
   return (
     <TouchableOpacity
       style={[styles.container, { backgroundColor: list.color }]}
+      onPress={() => openmodal()}
     >
       <Text
         style={{
@@ -33,6 +42,9 @@ export default function TodoList({ list }) {
         <Text style={styles.number}>{remainingcount}</Text>
         <Text style={styles.text}>Remaining</Text>
       </View>
+      <Modal visible={modal}>
+        <ToDoListModal data={list} close={closemodal} />
+      </Modal>
     </TouchableOpacity>
   );
 }
