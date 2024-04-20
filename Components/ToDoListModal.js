@@ -12,13 +12,31 @@ import { colors } from "../Constants/Colors";
 
 //icons
 import { Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
+import { listData } from "../Constants/ListData";
 
 export default function ToDoListModal({ data, close }) {
   const completedcount = data.todos.filter((item) => item.completed).length;
   const remainingcount = data.todos.length - completedcount;
   const totallength = data.todos.length;
-  const todos = data.todos;
+
+  const [list, setlist] = useState(data);
+  const todos = list.todos;
   const [newtask, setnewtask] = useState("");
+
+  const addTask = () => {
+    const updatedList = {
+      ...list,
+      todos: [
+        ...list.todos,
+        {
+          title: newtask,
+          completed: false,
+        },
+      ],
+    };
+    setlist(updatedList);
+  };
+
   return (
     <>
       <TouchableOpacity
@@ -51,6 +69,7 @@ export default function ToDoListModal({ data, close }) {
           style={{ height: 2, backgroundColor: data.color, marginTop: 10 }}
         ></View>
         <FlatList
+          keyboardShouldPersistTaps="always"
           data={todos}
           keyExtractor={(item) => item.title}
           renderItem={({ item }) => (
@@ -120,7 +139,7 @@ export default function ToDoListModal({ data, close }) {
             justifyContent: "center",
             alignItems: "center",
           }}
-          onPress={() => console.log(newtask)}
+          onPress={() => addTask()}
         >
           <AntDesign name="plus" size={16} color="white" />
         </TouchableOpacity>
