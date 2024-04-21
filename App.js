@@ -18,6 +18,14 @@ import { listData } from "./Constants/ListData";
 import TodoList from "./Components/TodoList";
 import AppListModal from "./Components/AddListModal";
 
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Home from "./Screens/Home";
+import Login from "./Screens/Login";
+import SignUp from "./Screens/SignUp";
+
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   const [modal, setmodal] = useState(false);
 
@@ -46,67 +54,15 @@ export default function App() {
     SplashScreen.hideAsync();
   }
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, animation: "fade" }}
       >
-        <View
-          style={{ height: 1, backgroundColor: colors.black, width: 100 }}
-        ></View>
-        <Text
-          style={{
-            fontSize: 38,
-            fontFamily: font.bold,
-            paddingHorizontal: 20,
-          }}
-        >
-          ToDo{" "}
-          <Text
-            style={{
-              color: colors.blue,
-              fontFamily: font.regular,
-            }}
-          >
-            List
-          </Text>
-        </Text>
-        <View
-          style={{ height: 1, backgroundColor: colors.black, width: 100 }}
-        ></View>
-      </View>
-      <TouchableOpacity
-        style={{
-          width: 50,
-          height: 50,
-          borderRadius: 25,
-          backgroundColor: colors.blue,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 30,
-        }}
-        onPress={() => openmodal()}
-      >
-        <AntDesign name="plus" size={24} color="white" />
-      </TouchableOpacity>
-      <View style={{ width: "95%", marginTop: 40 }}>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          data={listData}
-          ItemSeparatorComponent={<View style={{ width: 10 }}></View>}
-          keyExtractor={(item) => item.name}
-          renderItem={({ item }) => <TodoList list={item} />}
-        />
-      </View>
-      <Modal animationType="fade" visible={modal}>
-        <AppListModal closemodal={modalclose} />
-      </Modal>
-    </View>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
